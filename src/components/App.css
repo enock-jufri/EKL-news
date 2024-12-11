@@ -1,0 +1,100 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+}
+header h1{
+    color: red;
+}
+
+.maincontent {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    flex: 1;
+}
+
+.side-news {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.side-news-image {
+    width: 100px;
+    height: 80px;
+    margin-right: 10px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.side-news-title {
+    font-size: 14px;
+    margin: 0;
+}
+  
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+  }
+  
+  .auth-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .auth-form input {
+    width: calc(100% - 20px);
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .auth-form .submit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .auth-form .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .auth-form .form-switch-text {
+    margin-top: 15px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .auth-form .form-switch-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .auth-form .form-switch-link:hover {
+    color: #0056b3;
+  }
