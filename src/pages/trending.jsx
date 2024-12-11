@@ -1,5 +1,6 @@
 import MainContent from "../components/maincontent";
 import Sidebar from "../components/sidebar";
+
 function Trending() {
   return (
     <>

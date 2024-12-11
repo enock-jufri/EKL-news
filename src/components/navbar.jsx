@@ -28,6 +28,18 @@ function Navbar() {
       >
         Sports
       </NavLink>
+      <NavLink
+        to="/business"
+        className="nav-link"
+      >
+        Business
+      </NavLink>
+      <NavLink
+        to="/entertaiment"
+        className="nav-link"
+      >
+        Entertainment
+      </NavLink>
     </nav>
   );
 };

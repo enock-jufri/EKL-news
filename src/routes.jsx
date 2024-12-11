@@ -4,6 +4,8 @@ import Trending from "./pages/trending";
 import Health from "./pages/health";
 import Politics from "./pages/politics";
 import Sports from "./pages/sports";
+import Business from "./pages/business";
+import Entertainment from "./pages/entertainment";
 
 const routes = [
     {
@@ -29,6 +31,14 @@ const routes = [
             {
                 path: "/sports",
                 element: <Sports />,
+            },
+            {
+                path: "/business",
+                element: <Business />,
+            },
+            {
+                path: "/entertainment",
+                element: <Entertainment />,
             },
 
         ]
