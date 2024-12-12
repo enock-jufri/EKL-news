@@ -1,100 +1,151 @@
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px;
 }
-header h1{
-    color: red;
+
+header h1 {
+  color: red;
 }
 
 .maincontent {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  position: absolute;
+  width: 95vw;
+  height: 100vh;
+  gap: 20px;
+}
+
+.main-content {
+  width: 1200px;
+  height: 900px;
+  overflow: hidden;
 }
 
 .sidebar {
-    flex: 1;
+  flex: 1;
+}
+
+.featured-news {
+  width: 1200px;
+  height: 900px;
+  margin: 0 auto;
+}
+
+.featured-news img {
+  width: 100%;
+  height: auto;
 }
 
 .side-news {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 2px solid black;
 }
 
 .side-news-image {
-    width: 100px;
-    height: 80px;
-    margin-right: 10px;
-    object-fit: cover;
-    border-radius: 5px;
+  width: 300px;
+  height: 200px;
+  margin-right: 10px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .side-news-title {
-    font-size: 14px;
-    margin: 0;
+  font-size: 14px;
+  margin: 0;
+  transition: color 0.3s, text-shadow 0.3s;
+  /* Smooth transition effect */
 }
-  
+
+.side-news-title:hover {
+  text-decoration: underline;
+  /* Add underline on hover */
+  cursor: alias;
+}
+
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
-  }
-  
-  .auth-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .auth-form h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .auth-form input {
-    width: calc(100% - 20px);
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .auth-form .submit-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .auth-form .submit-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .auth-form .form-switch-text {
-    margin-top: 15px;
-    color: #666;
-    font-size: 14px;
-  }
-  
-  .auth-form .form-switch-link {
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  .auth-form .form-switch-link:hover {
-    color: #0056b3;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.auth-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.auth-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.auth-form input {
+  width: calc(100% - 20px);
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.auth-form .submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form .submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.auth-form .form-switch-text {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+.auth-form .form-switch-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-form .form-switch-link:hover {
+  color: #0056b3;
+}
+
+form {
+  margin-bottom: 20px;
+
+}
+
+#button {
+  background-color: blue;
+  color: white;
+  margin-left: 10px;
+}
+
+#like-button {
+  padding: "10px";
+  border: "none";
+  background: "none";
+  cursor: "pointer";
+  font-size: "24px";
+  transition: "transform 0.2s ease";
+}

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./navbar.css";
+import Search from "./search";
 
 function Navbar() {
   return (
@@ -11,10 +12,10 @@ function Navbar() {
         Trending
       </NavLink>
       <NavLink
-        to="/politics"
+        to="/science"
         className="nav-link"
       >
-        Politics
+        Science
       </NavLink>
       <NavLink
         to="/health"
@@ -27,18 +28,6 @@ function Navbar() {
         className="nav-link"
       >
         Sports
-      </NavLink>
-      <NavLink
-        to="/business"
-        className="nav-link"
-      >
-        Business
-      </NavLink>
-      <NavLink
-        to="/entertaiment"
-        className="nav-link"
-      >
-        Entertainment
       </NavLink>
     </nav>
   );

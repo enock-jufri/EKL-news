@@ -1,18 +1,23 @@
-import React from "react";
 
-function MainContent() {
+import { useState } from "react";
+function MainContent({ news, onLike }) {
+
+  const toggleLike = () => {
+    setLiked(!liked)
+    if (!liked) {
+      onLike(news)
+    }
+  };
   return (
     <main className="main-content">
       <article className="featured-news">
-        <img src="https://ichef.bbci.co.uk/news/1024/cpsprodpb/6786/live/9dba9840-b34d-11ef-a0f2-fd81ae5962f4.jpg.webp" alt="Featured News" />
-        <h2>
-          Trump lays out sweeping early acts on deportation and January 6
-          pardons
-        </h2>
-        <p>
-          President-elect Donald Trump in a television interview that aired
-          Sunday previewed a sweeping agenda for his first days in office...
-        </p>
+        <img src={news.urlToImage} alt={news.title} />
+        <button id="like-button" onClick={toggleLike}>
+          {liked ? "❤️" : "🖤"}
+        </button>
+        <h2>{news.title}</h2>
+        <p>{news.content}</p>
+        <a href={news.url}>Read more</a>
       </article>
       <footer class="footer">
   <div class="footer-container">

@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
-import MainContent from "../components/maincontent";
-import Sidebar from "../components/sidebar";
+import { useState, useEffect } from "react"
+import MainContent from "../components/maincontent"
+import Sidebar from "../components/sidebar"
 
-function Sports() {
+function Science() {
+
   const [news, setnews] = useState([])
 
   useEffect(() => {
-    fetch('https://news-api-rouge.vercel.app/api/get-data?category=sports')
+    fetch('https://news-api-rouge.vercel.app/api/get-data?category=science')
       .then(res => res.json())
       .then(result => {
         setnews(result.articles)
-        setmain(result.articles[Math.floor(Math.random() * 11)])
+        setmain(result.articles[Math.floor(Math.random() * 6)])
       })
   }, [])
 
@@ -31,4 +32,4 @@ function Sports() {
   );
 };
 
-export default Sports;
+export default Science;
