@@ -4,7 +4,7 @@ import MainContent from "./maincontent"
 import Sidebar from "./sidebar"
 
 function Read() {
-    const { articles} = useOutletContext(); // Default to an empty array
+    const { articles} = useOutletContext();
     console.log(articles);
     const [main, setmain] = useState([])
 

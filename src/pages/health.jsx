@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import MainContent from "../components/maincontent";
 import Sidebar from "../components/sidebar";
+import { useOutletContext } from "react-router-dom"
+
 function Health() {
   const [news, setnews] = useState([])
+  const [main, setmain] = useState([])
+  const { onBookmark } = useOutletContext()
+
 
   useEffect(() => {
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=health')
@@ -13,9 +18,6 @@ function Health() {
       })
   }, [])
 
-  const [main, setmain] = useState([])
-  console.log(main)
-
   function handleAdd(news) {
     setmain(news)
   }
@@ -23,7 +25,7 @@ function Health() {
   return (
     <>
       <main className="maincontent">
-        <MainContent news={main} />
+        <MainContent news={main} onBookmark={onBookmark} />
         <Sidebar onAdd={handleAdd} news={news} />
       </main>
     </>

@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 
 function App() {
   const [articles, setArticles] = useState([]);
+
   function onBookmark(n) {
     setArticles([...articles, n]);
   }
