@@ -29,6 +29,12 @@ function Navbar() {
       >
         Sports
       </NavLink>
+      <NavLink
+        to="/technology"
+        className="nav-link"
+      >
+        Technology
+      </NavLink>
     </nav>
   );
 };

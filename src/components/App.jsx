@@ -9,10 +9,10 @@ function App() {
 
   const [articles, setArticles] = useState()
 
-  function onlike(article) {
-    setArticles(article)
+  function handleLike(article) {
+    setArticles([...articles, article])
   }
-
+  console.log(articles)
   return (
     <>
       <header>
@@ -24,7 +24,7 @@ function App() {
           <NavLink to="/read" className="nav-link">Read Later</NavLink>
         </div>
       </header>
-      <Outlet context={{onlike,articles}} />
+      <Outlet context={{ handleLike, articles }} />
     </>
   );
 }

@@ -1,4 +1,7 @@
 import { useOutletContext } from "react-router-dom"
+import { useState } from "react"
+import MainContent from "./maincontent"
+import Sidebar from "./sidebar"
 
 function Read() {
     const [main, setmain] = useState([])
@@ -6,6 +9,10 @@ function Read() {
 
     function handleAdd(news) {
         setmain(news)
+    }
+
+    if (!articles) {
+        return <p>empty</p>
     }
     return (
         <>

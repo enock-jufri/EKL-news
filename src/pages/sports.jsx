@@ -9,6 +9,7 @@ function Sports() {
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=sports')
       .then(res => res.json())
       .then(result => {
+        console.log(result)
         setnews(result.articles)
         setmain(result.articles[Math.floor(Math.random() * 11)])
       })

@@ -16,7 +16,6 @@ function Science() {
   }, [])
 
   const [main, setmain] = useState([])
-  console.log(main)
 
   function handleAdd(news) {
     setmain(news)

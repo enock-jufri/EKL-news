@@ -3,6 +3,11 @@ import Login from "./pages/login";
 import Trending from "./pages/trending";
 import Health from "./pages/health";
 import Sports from "./pages/sports";
+import Technology from "./pages/technology";
+import Science from "./pages/science";
+import Search from "./components/search";
+import Read from "./components/readlater";
+
 
 const routes = [
     {
@@ -28,6 +33,18 @@ const routes = [
             {
                 path: "/sports",
                 element: <Sports />,
+            },
+            {
+                path: "/technology",
+                element: <Technology />,
+            },
+            {
+                path: "/search",
+                element: <Search />,
+            },
+            {
+                path: "/read",
+                element: <Read />,
             },
 
         ]

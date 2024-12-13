@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import MainContent from "../components/maincontent";
 import Sidebar from "../components/sidebar";
+import { useOutletContext } from "react-router-dom";
+
 function Trending() {
   const [news, setnews] = useState([])
   const [main, setmain] = useState([])
-  const onLike = useOutletContext()
+  const { handleLike } = useOutletContext()
 
   useEffect(() => {
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=general')
@@ -23,8 +25,8 @@ function Trending() {
   return (
     <>
       <main className="maincontent">
-        <MainContent news={main} onLike={onLike} />
-        <Sidebar onAdd={handleAdd} news={news} />
+        <MainContent news={main}  />
+        <Sidebar onAdd={handleAdd} news={news} onLike={handleLike} />
       </main>
     </>
   );
