@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import "./navbar.css";
-import Search from "./search";
 
 function Navbar() {
   return (

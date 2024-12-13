@@ -6,13 +6,11 @@ import { NavLink } from "react-router-dom";
 
 
 function App() {
-
-  const [articles, setArticles] = useState()
-
-  function handleLike(article) {
-    setArticles([...articles, article])
+  const [articles, setArticles] = useState([]);
+  function onBookmark(n) {
+    setArticles([...articles, n]);
   }
-  console.log(articles)
+
   return (
     <>
       <header>
@@ -24,7 +22,7 @@ function App() {
           <NavLink to="/read" className="nav-link">Read Later</NavLink>
         </div>
       </header>
-      <Outlet context={{ handleLike, articles }} />
+      <Outlet context={{ onBookmark, articles }} />
     </>
   );
 }

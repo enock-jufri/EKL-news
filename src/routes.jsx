@@ -15,35 +15,35 @@ const routes = [
         element: <App />,
         children: [
             {
-                path: "/",
+                index: true,
                 element: <Trending />,
             },
             {
-                path: "/health",
+                path: "health",
                 element: <Health />,
             },
             {
-                path: "/science",
+                path: "science",
                 element: <Science />,
             },
             {
-                path: "/login",
+                path: "login",
                 element: <Login />,
             },
             {
-                path: "/sports",
+                path: "sports",
                 element: <Sports />,
             },
             {
-                path: "/technology",
+                path: "technology",
                 element: <Technology />,
             },
             {
-                path: "/search",
+                path: "search",
                 element: <Search />,
             },
             {
-                path: "/read",
+                path: "read",
                 element: <Read />,
             },
 

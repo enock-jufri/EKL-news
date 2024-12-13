@@ -6,8 +6,8 @@ import { useOutletContext } from "react-router-dom";
 function Trending() {
   const [news, setnews] = useState([])
   const [main, setmain] = useState([])
-  const { handleLike } = useOutletContext()
-
+  const {onBookmark}  = useOutletContext()
+  
   useEffect(() => {
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=general')
       .then(res => res.json())
@@ -25,8 +25,8 @@ function Trending() {
   return (
     <>
       <main className="maincontent">
-        <MainContent news={main}  />
-        <Sidebar onAdd={handleAdd} news={news} onLike={handleLike} />
+        <MainContent news={main} onBookmark={onBookmark} />
+        <Sidebar onAdd={handleAdd} news={news} />
       </main>
     </>
   );

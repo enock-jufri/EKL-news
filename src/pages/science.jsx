@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 import MainContent from "../components/maincontent"
 import Sidebar from "../components/sidebar"
+import { useOutletContext } from "react-router-dom"
 
 function Science() {
-
+const {articles}=useOutletContext()
+console.log({articles})
   const [news, setnews] = useState([])
 
   useEffect(() => {

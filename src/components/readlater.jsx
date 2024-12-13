@@ -4,8 +4,9 @@ import MainContent from "./maincontent"
 import Sidebar from "./sidebar"
 
 function Read() {
+    const { articles} = useOutletContext(); // Default to an empty array
+    console.log(articles);
     const [main, setmain] = useState([])
-    const { articles } = useOutletContext()
 
     function handleAdd(news) {
         setmain(news)
@@ -15,10 +16,10 @@ function Read() {
         return <p>empty</p>
     }
     return (
-        <>
+        <main className="maincontent">
             <MainContent news={main} />
             <Sidebar onAdd={handleAdd} news={articles} />
-        </>
+        </main>
     )
 }
 export default Read
