@@ -13,8 +13,9 @@ function Trending() {
       .then(res => res.json())
       .then(result => {
         console.log(result)
-        setmain(result.articles[Math.floor(Math.random() * 6)])
-        setnews(result.articles)
+        setnews(result.articles.filter(article=>article.urlToImage!==null))
+        setmain(result.articles.filter(article=>article.urlToImage!==null)[0])
+
       })
   }, [])
 
