@@ -16,7 +16,7 @@ function MainContent({ news, onBookmark}) {
         </button>
         <h2>{news.title}</h2>
         <p>{news.content}</p>
-        <a href={news.url}>Read more</a>
+        <a id="link" href={news.url}>Read more</a>
 
       </article>
     </main>

@@ -1,7 +1,8 @@
-body{
+body {
   background-color: #1A1A1A;
   color: #E0E0E0;
 }
+
 header {
   display: flex;
   justify-content: space-between;
@@ -12,7 +13,9 @@ header {
 header h1 {
   color: red;
 }
-header h1:hover{
+
+
+header h1:hover {
   cursor: pointer;
 }
 
@@ -71,8 +74,8 @@ header h1:hover{
 .side-news-title:hover {
   text-decoration: underline;
   /* Add underline on hover */
-  cursor:pointer;
-  color:#0078d7
+  cursor: pointer;
+  color: #0078d7
 }
 
 .auth-container {
@@ -201,6 +204,7 @@ form {
   background-color: #fff;
   /* White icon on hover */
 }
-#link{
+
+#link {
   color: #0078d7;
 }
