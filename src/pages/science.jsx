@@ -14,8 +14,8 @@ function Science() {
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=science')
       .then(res => res.json())
       .then(result => {
-        setnews(result.articles)
-        setmain(result.articles[Math.floor(Math.random() * 6)])
+        setnews(result.articles.filter(article => article.urlToImage !== null))
+        setmain(result.articles.filter(article => article.urlToImage !== null)[0])
       })
   }, [])
 
