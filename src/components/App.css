@@ -53,7 +53,7 @@ header h1:hover {
   align-items: center;
   margin-bottom: 20px;
   border-radius: 5px;
-  border: 2px solid black;
+  border: 2px solid #ccc;
 }
 
 .side-news-image {
@@ -207,4 +207,12 @@ form {
 
 #link {
   color: #0078d7;
+}
+
+.category {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.categorytitle{
+  color: blue;
 }

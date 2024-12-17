@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import MainContent from "../components/maincontent";
 import Sidebar from "../components/sidebar";
 import { useOutletContext } from "react-router-dom"
+import Navbar from "../components/navbar";
 
 function Health() {
   const [news, setnews] = useState([])
@@ -24,6 +25,10 @@ function Health() {
 
   return (
     <>
+      <div className="category">
+        <Navbar />
+      </div>
+      <h2 className="categorytitle">Health</h2>
       <main className="maincontent">
         <MainContent news={main} onBookmark={onBookmark} />
         <Sidebar onAdd={handleAdd} news={news} />

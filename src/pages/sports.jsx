@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import MainContent from "../components/maincontent";
 import Sidebar from "../components/sidebar";
 import { useOutletContext } from "react-router-dom"
+import Navbar from "../components/navbar";
 
 
 function Sports() {
@@ -25,6 +26,10 @@ function Sports() {
 
   return (
     <>
+     <div className="category">
+        <Navbar />
+      </div>
+      <h2 className="categorytitle">Science</h2>
       <main className="maincontent">
         <MainContent news={main} onBookmark={onBookmark} />
         <Sidebar onAdd={handleAdd} news={news} />

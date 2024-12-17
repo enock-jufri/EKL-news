@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import MainContent from "../components/maincontent"
 import Sidebar from "../components/sidebar"
 import { useOutletContext } from "react-router-dom"
+import Navbar from "../components/navbar"
 
 function Technology() {
 
@@ -10,6 +11,7 @@ function Technology() {
   const { onBookmark } = useOutletContext()
 
   useEffect(() => {
+    
     fetch('https://news-api-rouge.vercel.app/api/get-data?category=Technology')
       .then(res => res.json())
       .then(result => {
@@ -24,6 +26,10 @@ function Technology() {
 
   return (
     <>
+     <div className="category">
+        <Navbar />
+      </div>
+      <h2 className="categorytitle">Technology</h2>
       <main className="maincontent">
         <MainContent news={main} onBookmark={onBookmark} />
         <Sidebar onAdd={handleAdd} news={news} />

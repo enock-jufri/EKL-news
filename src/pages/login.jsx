@@ -36,7 +36,7 @@ function Login() {
 
     try {
       // Make the API call
-      const response = await fetch(url, {
+      const response = await fetch(`mongodb://localhost:27017/auth-example/${url}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
