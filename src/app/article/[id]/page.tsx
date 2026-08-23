@@ -15,6 +15,9 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export const runtime = "nodejs";
+export const maxDuration = 30;
+
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const url = decodeArticleId(id);
