@@ -6,12 +6,22 @@ import { BookmarkButton } from "@/components/bookmark-button";
 import { encodeArticleId } from "@/lib/article-id";
 import type { Article } from "@/lib/news";
 
-export function FeaturedArticle({ article }: { article: Article }) {
+export function FeaturedArticle({
+  article,
+  from,
+}: {
+  article: Article;
+  from?: string;
+}) {
   if (!article) return null;
 
   return (
     <Link
-      href={`/article/${encodeArticleId(article.url)}`}
+      href={
+        from
+          ? `/article/${encodeArticleId(article.url)}?from=${from}`
+          : `/article/${encodeArticleId(article.url)}`
+      }
       className="group bg-card relative flex min-h-[420px] flex-col justify-end overflow-hidden rounded-2xl border lg:min-h-[520px]"
     >
       {article.urlToImage && (

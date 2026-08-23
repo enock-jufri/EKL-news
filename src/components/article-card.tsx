@@ -6,7 +6,13 @@ import { BookmarkButton } from "@/components/bookmark-button";
 import { encodeArticleId } from "@/lib/article-id";
 import type { Article } from "@/lib/news";
 
-export function ArticleCard({ article }: { article: Article }) {
+export function ArticleCard({
+  article,
+  from,
+}: {
+  article: Article;
+  from?: string;
+}) {
   const date = new Date(article.publishedAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -14,7 +20,11 @@ export function ArticleCard({ article }: { article: Article }) {
 
   return (
     <Link
-      href={`/article/${encodeArticleId(article.url)}`}
+      href={
+        from
+          ? `/article/${encodeArticleId(article.url)}?from=${from}`
+          : `/article/${encodeArticleId(article.url)}`
+      }
       className="group bg-card flex flex-col overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
     >
       <div className="relative aspect-video overflow-hidden">

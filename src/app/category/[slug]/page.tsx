@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function Feed({ slug }: { slug: string }) {
   const articles = await fetchByCategory(slug);
-  return <NewsFeed articles={articles} featured />;
+  return <NewsFeed articles={articles} featured from={slug} />;
 }
 
 export default async function CategoryPage({ params }: Props) {

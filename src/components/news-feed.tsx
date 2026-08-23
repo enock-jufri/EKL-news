@@ -6,9 +6,11 @@ import type { Article } from "@/lib/news";
 export function NewsFeed({
   articles,
   featured,
+  from,
 }: {
   articles: Article[];
   featured?: boolean;
+  from?: string;
 }) {
   if (articles.length === 0) {
     return (
@@ -22,10 +24,10 @@ export function NewsFeed({
 
   return (
     <div className="flex flex-col gap-8">
-      {featured && <FeaturedArticle article={first} />}
+      {featured && <FeaturedArticle article={first} from={from} />}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {(featured ? rest : articles).map((article, i) => (
-          <ArticleCard key={`${article.url}-${i}`} article={article} />
+          <ArticleCard key={`${article.url}-${i}`} article={article} from={from} />
         ))}
       </div>
     </div>

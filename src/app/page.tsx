@@ -5,7 +5,7 @@ import { fetchByCategory } from "@/lib/news";
 
 async function Feed() {
   const articles = await fetchByCategory("trending");
-  return <NewsFeed articles={articles} featured />;
+  return <NewsFeed articles={articles} featured from="trending" />;
 }
 
 export default function HomePage() {
