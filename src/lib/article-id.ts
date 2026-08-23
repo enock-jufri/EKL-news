@@ -1,10 +1,25 @@
+/** Base64url that works in both Node and the browser (no Buffer). */
+function toBase64Url(bytes: Uint8Array): string {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(id: string): string {
+  const base64 = id.replace(/-/g, "+").replace(/_/g, "/");
+  const binary = atob(base64);
+  return new TextDecoder().decode(
+    Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  );
+}
+
 export function encodeArticleId(url: string): string {
-  return Buffer.from(url, "utf8").toString("base64url");
+  return toBase64Url(new TextEncoder().encode(url));
 }
 
 export function decodeArticleId(id: string): string | null {
   try {
-    const url = Buffer.from(id, "base64url").toString("utf8");
+    const url = fromBase64Url(id);
     const parsed = new URL(url);
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       return null;
