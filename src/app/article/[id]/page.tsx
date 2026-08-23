@@ -1,35 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowLeft, Clock3, ExternalLink } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArticleCard } from "@/components/article-card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { BookmarkButton } from "@/components/bookmark-button";
+import { ArticleCard } from "@/components/article-card";
 import { ArticleReader } from "@/components/article-reader";
 import { ReadingProgress } from "@/components/reading-progress";
-import {
-  decodeArticleId,
-  extractArticle,
-} from "@/lib/extract";
+import { decodeArticleId, extractArticle } from "@/lib/extract";
 import { fetchByCategory } from "@/lib/news";
 
 interface Props {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ from?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-export async function generateMetadata({ params }: Props) {
-  const { id } = await params;
-  const url = decodeArticleId(id);
-  if (!url) return { title: "Article" };
-  const article = await extractArticle(url);
+function first(value: string | string[] | undefined): string | null {
+  return (Array.isArray(value) ? value[0] : value) ?? null;
+}
+
+/** Lightweight metadata so the shell renders without waiting on extraction. */
+export async function generateMetadata({ searchParams }: Props) {
+  const sp = await searchParams;
+  const title = first(sp.t);
+  const description = first(sp.x);
   return {
-    title: article.title || "Article",
-    description: article.excerpt ?? undefined,
+    title: title ?? "Article",
+    ...(description ? { description } : {}),
   };
 }
 
@@ -46,20 +49,86 @@ function formatDate(value: string | null): string | null {
   }
 }
 
-function readingMinutes(html: string | null): number | null {
-  if (!html) return null;
+function readingMinutes(html: string): number {
   const words = html
     .replace(/<[^>]+>/g, " ")
     .split(/\s+/)
     .filter(Boolean).length;
-  return words > 80 ? Math.max(1, Math.round(words / 220)) : null;
+  return Math.max(1, Math.round(words / 220));
 }
 
+/** Streams in: full text extracted server-side. */
+async function ExtractedBody({
+  url,
+  heroImage,
+}: {
+  url: string;
+  heroImage: string | null;
+}) {
+  const article = await extractArticle(url);
+  const minutes = article.html ? readingMinutes(article.html) : null;
+
+  return (
+    <>
+      {minutes !== null && (
+        <p className="text-muted-foreground mb-6 flex items-center gap-1 text-sm">
+          <Clock3 className="size-3.5" /> {minutes} min read
+        </p>
+      )}
+
+      {article.html ? (
+        <div
+          className="prose prose-neutral dark:prose-invert max-w-none prose-img:rounded-lg"
+          dangerouslySetInnerHTML={{ __html: article.html }}
+        />
+      ) : (
+        <div className="flex flex-col items-start gap-4 py-4">
+          <p className="text-muted-foreground">
+            We couldn&apos;t display the full text of this article — the
+            publisher doesn&apos;t allow it to be embedded.
+          </p>
+          {article.excerpt && (
+            <p className="text-base leading-relaxed">{article.excerpt}</p>
+          )}
+          {!heroImage && article.imageUrl && (
+            <p className="text-muted-foreground text-sm">
+              Open the source below to see the original piece.
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className="mt-10 border-t pt-6">
+        <Button variant="outline" asChild>
+          <a href={article.url} target="_blank" rel="noopener noreferrer">
+            Read at source <ExternalLink className="size-4" />
+          </a>
+        </Button>
+      </div>
+    </>
+  );
+}
+
+function BodySkeleton() {
+  return (
+    <div className="mt-6 flex flex-col gap-4">
+      <Skeleton className="h-5 w-32" />
+      {Array.from({ length: 9 }).map((_, i) => (
+        <Skeleton
+          key={i}
+          className={`h-4 ${i % 4 === 3 ? "w-2/3" : "w-full"}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+/** Related feed is ISR-cached, so this resolves quickly after first hit. */
 async function RelatedArticles({
   from,
   currentUrl,
 }: {
-  from?: string;
+  from: string | null;
   currentUrl: string;
 }) {
   if (!from) return null;
@@ -84,7 +153,7 @@ async function RelatedArticles({
 
 export default async function ArticlePage({ params, searchParams }: Props) {
   const { id } = await params;
-  const { from } = await searchParams;
+  const sp = await searchParams;
   const url = decodeArticleId(id);
 
   if (!url) {
@@ -95,9 +164,14 @@ export default async function ArticlePage({ params, searchParams }: Props) {
     );
   }
 
-  const article = await extractArticle(url);
-  const date = formatDate(article.publishedTime);
-  const minutes = readingMinutes(article.html);
+  // Instant display metadata carried over from the listing page.
+  const meta = {
+    title: first(sp.t) ?? "",
+    source: first(sp.s),
+    image: first(sp.i),
+    date: formatDate(first(sp.d)),
+    from: first(sp.from),
+  };
 
   return (
     <>
@@ -105,11 +179,11 @@ export default async function ArticlePage({ params, searchParams }: Props) {
 
       <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <ArticleReader
-          url={article.url}
-          title={article.title}
+          url={url}
+          title={meta.title}
           leading={
             <Button variant="ghost" size="sm" asChild>
-              <Link href={from === "trending" ? "/" : `/category/${from}`}>
+              <Link href={meta.from === "trending" ? "/" : `/category/${meta.from}`}>
                 <ArrowLeft className="size-4" /> Back
               </Link>
             </Button>
@@ -117,13 +191,13 @@ export default async function ArticlePage({ params, searchParams }: Props) {
           actions={
             <BookmarkButton
               article={{
-                source: { id: null, name: article.siteName ?? "" },
-                author: article.byline,
-                title: article.title,
-                description: article.excerpt,
-                url: article.url,
-                urlToImage: article.imageUrl,
-                publishedAt: article.publishedTime ?? new Date().toISOString(),
+                source: { id: null, name: meta.source ?? "" },
+                author: null,
+                title: meta.title,
+                description: null,
+                url,
+                urlToImage: meta.image,
+                publishedAt: first(sp.d) ?? new Date().toISOString(),
                 content: null,
               }}
               variant="ghost"
@@ -132,33 +206,25 @@ export default async function ArticlePage({ params, searchParams }: Props) {
         >
           <header className="mb-6 flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              {article.siteName && (
-                <Badge variant="secondary">{article.siteName}</Badge>
+              {meta.source && (
+                <Badge variant="secondary">{meta.source}</Badge>
               )}
-              {date && (
-                <span className="text-muted-foreground text-sm">{date}</span>
-              )}
-              {minutes && (
-                <span className="text-muted-foreground flex items-center gap-1 text-sm">
-                  <Clock3 className="size-3.5" /> {minutes} min read
+              {meta.date && (
+                <span className="text-muted-foreground text-sm">
+                  {meta.date}
                 </span>
               )}
             </div>
             <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-              {article.title}
+              {meta.title}
             </h1>
-            {article.byline && (
-              <p className="text-muted-foreground text-sm">
-                By {article.byline}
-              </p>
-            )}
           </header>
 
-          {article.imageUrl && (
+          {meta.image && (
             <figure className="relative mb-8 aspect-video overflow-hidden rounded-xl border">
               <Image
-                src={article.imageUrl}
-                alt={article.title}
+                src={meta.image}
+                alt={meta.title}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 768px"
@@ -167,34 +233,15 @@ export default async function ArticlePage({ params, searchParams }: Props) {
             </figure>
           )}
 
-          {article.html ? (
-            <div
-              className="prose prose-neutral dark:prose-invert max-w-none prose-img:rounded-lg"
-              dangerouslySetInnerHTML={{ __html: article.html }}
-            />
-          ) : (
-            <div className="flex flex-col items-start gap-4 py-4">
-              <p className="text-muted-foreground">
-                We couldn&apos;t display the full text of this article — the
-                publisher doesn&apos;t allow it to be embedded.
-              </p>
-              {article.excerpt && (
-                <p className="text-base leading-relaxed">{article.excerpt}</p>
-              )}
-            </div>
-          )}
-
-          <div className="mt-10 border-t pt-6">
-            <Button variant="outline" asChild>
-              <a href={article.url} target="_blank" rel="noopener noreferrer">
-                Read at source <ExternalLink className="size-4" />
-              </a>
-            </Button>
-          </div>
+          <Suspense fallback={<BodySkeleton />}>
+            <ExtractedBody url={url} heroImage={meta.image} />
+          </Suspense>
         </ArticleReader>
       </article>
 
-      <RelatedArticles from={from} currentUrl={url} />
+      <Suspense fallback={null}>
+        <RelatedArticles from={meta.from} currentUrl={url} />
+      </Suspense>
     </>
   );
 }

@@ -112,7 +112,7 @@ export async function extractArticle(
           "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
         Accept: "text/html,application/xhtml+xml",
       },
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(10_000),
       next: { revalidate },
     });
     if (!res.ok) throw new Error(`Fetch failed with ${res.status}`);

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/bookmark-button";
-import { encodeArticleId } from "@/lib/article-id";
+import { buildArticleHref } from "@/lib/article-id";
 import type { Article } from "@/lib/news";
 
 export function FeaturedArticle({
@@ -17,11 +17,7 @@ export function FeaturedArticle({
 
   return (
     <Link
-      href={
-        from
-          ? `/article/${encodeArticleId(article.url)}?from=${from}`
-          : `/article/${encodeArticleId(article.url)}`
-      }
+      href={buildArticleHref(article, from)}
       className="group bg-card relative flex min-h-[420px] flex-col justify-end overflow-hidden rounded-2xl border lg:min-h-[520px]"
     >
       {article.urlToImage && (

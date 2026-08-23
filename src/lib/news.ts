@@ -27,6 +27,11 @@ export const CATEGORIES = [
 
 const API_BASE = "https://news-api-rouge.vercel.app/api/get-data";
 
+/** Max articles rendered per feed (featured + grid rows of 3). */
+const FEED_LIMIT = 21;
+
+export const PAGE_SIZE_PARAM = `pageSize=${FEED_LIMIT}`;
+
 export function isValidCategory(slug: string): boolean {
   return CATEGORIES.some((c) => c.slug === slug);
 }
@@ -37,12 +42,15 @@ export async function fetchByCategory(
 ): Promise<Article[]> {
   const category =
     CATEGORIES.find((c) => c.slug === slug)?.apiCategory ?? "general";
-  return fetchArticles(`${API_BASE}?category=${category}`, revalidate);
+  return fetchArticles(
+    `${API_BASE}?category=${category}&${PAGE_SIZE_PARAM}`,
+    revalidate
+  );
 }
 
 export async function fetchByQuery(query: string): Promise<Article[]> {
   return fetchArticles(
-    `${API_BASE}?query=${encodeURIComponent(query)}`,
+    `${API_BASE}?query=${encodeURIComponent(query)}&${PAGE_SIZE_PARAM}`,
     0,
     false
   );
