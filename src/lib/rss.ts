@@ -6,13 +6,13 @@ import type { Article } from "@/lib/news-types";
 
 const BBC_FEEDS: Record<string, string> = {
   trending: "https://feeds.bbci.co.uk/news/rss.xml",
-  business: "https://feeds.bbci.co.uk/business/rss.xml",
-  health: "https://feeds.bbci.co.uk/health/rss.xml",
-  science: "https://feeds.bbci.co.uk/science_and_environment/rss.xml",
-  technology: "https://feeds.bbci.co.uk/technology/rss.xml",
+  business: "https://feeds.bbci.co.uk/news/business/rss.xml",
+  health: "https://feeds.bbci.co.uk/news/health/rss.xml",
+  science: "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+  technology: "https://feeds.bbci.co.uk/news/technology/rss.xml",
   sports: "https://feeds.bbci.co.uk/sport/football/rss.xml",
   entertainment:
-    "https://feeds.bbci.co.uk/entertainment_and_arts/rss.xml",
+    "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
 };
 
 const GOOGLE_NEWS_SEARCH =
@@ -20,6 +20,14 @@ const GOOGLE_NEWS_SEARCH =
 
 function text(el: Element | null, tag: string): string | null {
   return el?.getElementsByTagName(tag)[0]?.textContent?.trim() ?? null;
+}
+
+/**
+ * BBC feeds only ship 240px thumbnails, but their CDN serves any width
+ * via the URL pattern /ace/standard/{width}/... — request high-res.
+ */
+function upscaleThumbnail(url: string): string {
+  return url.replace(/\/ace\/standard\/\d+\//, "/ace/standard/976/");
 }
 
 function largestThumbnail(item: Element): string | null {
@@ -34,7 +42,7 @@ function largestThumbnail(item: Element): string | null {
       bestWidth = width;
     }
   }
-  return best;
+  return best ? upscaleThumbnail(best) : null;
 }
 
 function parseRss(xml: string, sourceName: string): Article[] {
