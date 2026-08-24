@@ -20,13 +20,21 @@ export function NewsFeed({
     );
   }
 
-  const [first, ...rest] = articles;
+  // Hero needs an image — pick the first article that has one.
+  const heroIndex = featured
+    ? Math.max(
+        articles.findIndex((a) => a.urlToImage),
+        0
+      )
+    : -1;
+  const hero = heroIndex >= 0 ? articles[heroIndex] : null;
+  const rest = articles.filter((_, i) => i !== heroIndex);
 
   return (
     <div className="flex flex-col gap-8">
-      {featured && <FeaturedArticle article={first} from={from} />}
+      {featured && hero && <FeaturedArticle article={hero} from={from} />}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {(featured ? rest : articles).map((article, i) => (
+        {rest.map((article, i) => (
           <ArticleCard key={`${article.url}-${i}`} article={article} from={from} />
         ))}
       </div>

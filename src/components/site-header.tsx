@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CATEGORIES } from "@/lib/news";
+import { CATEGORIES } from "@/lib/news-types";
 import { useBookmarks } from "@/store/bookmarks";
 import { cn } from "@/lib/utils";
 

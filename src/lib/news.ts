@@ -1,29 +1,11 @@
-export interface Article {
-  source: { id: string | null; name: string };
-  author: string | null;
-  title: string;
-  description: string | null;
-  url: string;
-  urlToImage: string | null;
-  publishedAt: string;
-  content: string | null;
-}
+import {
+  fetchRssCategoryFallback,
+  fetchRssSearchFallback,
+} from "@/lib/rss";
+import { CATEGORIES, type Article } from "@/lib/news-types";
 
-interface NewsResponse {
-  status: string;
-  totalResults: number;
-  articles: Article[];
-}
-
-export const CATEGORIES = [
-  { slug: "trending", label: "Trending", apiCategory: "general" },
-  { slug: "technology", label: "Technology", apiCategory: "technology" },
-  { slug: "business", label: "Business", apiCategory: "business" },
-  { slug: "health", label: "Health", apiCategory: "health" },
-  { slug: "science", label: "Science", apiCategory: "science" },
-  { slug: "sports", label: "Sports", apiCategory: "sports" },
-  { slug: "entertainment", label: "Entertainment", apiCategory: "entertainment" },
-] as const;
+export type { Article };
+export { CATEGORIES, isValidCategory } from "@/lib/news-types";
 
 const API_BASE = "https://news-api-rouge.vercel.app/api/get-data";
 
@@ -32,28 +14,31 @@ const FEED_LIMIT = 21;
 
 export const PAGE_SIZE_PARAM = `pageSize=${FEED_LIMIT}`;
 
-export function isValidCategory(slug: string): boolean {
-  return CATEGORIES.some((c) => c.slug === slug);
-}
+/** Cache feeds for 30 min to stay well inside the API's daily quota. */
+const FEED_REVALIDATE = 1800;
 
 export async function fetchByCategory(
   slug: string,
-  revalidate = 300
+  revalidate = FEED_REVALIDATE
 ): Promise<Article[]> {
   const category =
     CATEGORIES.find((c) => c.slug === slug)?.apiCategory ?? "general";
-  return fetchArticles(
+  const articles = await fetchArticles(
     `${API_BASE}?category=${category}&${PAGE_SIZE_PARAM}`,
     revalidate
   );
+  if (articles.length > 0) return articles;
+  return fetchRssCategoryFallback(slug);
 }
 
 export async function fetchByQuery(query: string): Promise<Article[]> {
-  return fetchArticles(
+  const articles = await fetchArticles(
     `${API_BASE}?query=${encodeURIComponent(query)}&${PAGE_SIZE_PARAM}`,
     0,
     false
   );
+  if (articles.length > 0) return articles;
+  return fetchRssSearchFallback(query);
 }
 
 async function fetchArticles(
@@ -67,7 +52,8 @@ async function fetchArticles(
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(`API responded with ${res.status}`);
-    const data: NewsResponse = await res.json();
+    const data: { status: string; articles?: Article[] } = await res.json();
+    if (data.status === "error") throw new Error("news API error");
     const articles = data.articles ?? [];
     return filterImages ? articles.filter((a) => a.urlToImage) : articles;
   } catch {

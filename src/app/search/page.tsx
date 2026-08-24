@@ -6,7 +6,7 @@ import { Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NewsFeed } from "@/components/news-feed";
-import { fetchByQuery, type Article } from "@/lib/news";
+import type { Article } from "@/lib/news-types";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -23,8 +23,14 @@ export default function SearchPage() {
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const results = await fetchByQuery(query.trim());
-        setArticles(results);
+        const res = await fetch(
+          `/api/search?q=${encodeURIComponent(query.trim())}`,
+          { signal: controller.signal }
+        );
+        const data = await res.json();
+        setArticles(data.articles ?? []);
+      } catch {
+        // aborted or network error — keep previous results
       } finally {
         setLoading(false);
       }

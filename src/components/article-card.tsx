@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Newspaper } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/bookmark-button";
@@ -23,14 +24,20 @@ export function ArticleCard({
       href={buildArticleHref(article, from)}
       className="group bg-card flex flex-col overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
     >
-      <div className="relative aspect-video overflow-hidden">
-        <Image
-          src={article.urlToImage ?? ""}
-          alt={article.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+      <div className="bg-muted relative aspect-video overflow-hidden">
+        {article.urlToImage ? (
+          <Image
+            src={article.urlToImage}
+            alt={article.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="text-muted-foreground flex size-full items-center justify-center">
+            <Newspaper className="size-8" />
+          </div>
+        )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-center gap-2">
